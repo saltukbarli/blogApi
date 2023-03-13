@@ -5,6 +5,7 @@ const PostSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
+        unique: true
     },
     description: {
         type: String,
@@ -17,9 +18,13 @@ const PostSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true
+    },
+    password: {
+        type: String,
+        required: true
     }
 },
-    { timestamps: true },{ versionKey: false }
+    { timestamps: true }, { versionKey: false }
 )
 
 module.exports = mongoose.model("Post", PostSchema)

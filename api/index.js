@@ -4,12 +4,13 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const userRoute = require("./routes/userRouter")
+const postRoute = require("./routes/postRouter")
 
 dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect(process.env.MONGO_URI/* "mongodb+srv://admin:saltuk123@cluster1.yw1lyeg.mongodb.net/blog?retryWrites=true&w=majority" */, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI, {
 
 
 app.use("/api/userRouter", userRoute)
+app.use("/api/postRouter", postRoute)
 
 app.listen("3000", () => {
     console.log("liveon");
