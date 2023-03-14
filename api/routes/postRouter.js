@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const { default: mongoose } = require("mongoose");
 const Post = require("../models/Post");
-const User = require("../models/User")
+const User = require("../models/User");
+/* const authenticate = require("../helpers/auths") */
 
 /* CREATE */
 router.post("/create", async (req, res) => {
@@ -29,6 +30,34 @@ router.post("/create", async (req, res) => {
     }
 })
 
-router.get("")
+router.get("/:username", async (req, res) => {
+    try {
+        const foundOne = await User.findOne({ username: req.params.username })
+        if (foundOne) {
+            const agg = await User.aggregate([
+                { '$match': { 'username': req.params.username } },
+                {'$lookup': {
+                        'from': 'posts',
+                        'localField': 'posts',
+                        'foreignField': '_id',
+                        'as': 'result'
+                    } },
+                { '$unwind': { 'path': '$result' } }, 
+                { '$project': {
+                        '_id': 0,
+                        'result': {
+                            'title': 1,
+                            'description': 1}
+                    }}
+            ]);
+            res.status(200).json(agg)
+        } else {
+            res.status(400).json("User not found!")
+        }
+    } catch (err) {
+        res.status(500)
+    }
+})
+
 
 module.exports = router
