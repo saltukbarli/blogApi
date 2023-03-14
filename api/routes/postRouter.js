@@ -44,11 +44,10 @@ router.get("/:username", async (req, res) => {
                     } },
                 { '$unwind': { 'path': '$result' } }, 
                 { '$project': {
-                        '_id': 0,
-                        'result': {
-                            'title': 1,
-                            'description': 1}
-                    }}
+                    '_id': 0, 
+                    'title': '$result.title', 
+                    'description': '$result.description'
+                  }}
             ]);
             res.status(200).json(agg)
         } else {
