@@ -19,7 +19,7 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
     }],
     messages: [{
-        type: String,
+        type: Object,
     }]
 }, { versionKey: false })
 

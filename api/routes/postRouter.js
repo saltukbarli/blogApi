@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const { default: mongoose } = require("mongoose");
 const Post = require("../models/Post");
 const User = require("../models/User");
 /* const authenticate = require("../helpers/auths") */
