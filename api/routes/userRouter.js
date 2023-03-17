@@ -15,12 +15,17 @@ router.post("/create", async (req, res) => {
             messages: req.body.messages,
         })
 
-        acc = await newAcc.save();
-        res.status(200).json(acc._id)
+        const acc = await newAcc.save();
+        if(acc){
+            res.status(200).json(acc._id)
+        } else {
+            res.status(404).send("Something has been occured.")
+        }
+        
 
     } catch (err) {
         const foundOne = await User.findOne({ username: req.body.username })
-        foundOne && res.status(404).json("Username has been taken!")
+        foundOne && res.status(404).send("Username has been taken!")
 
         res.status(500)
     }
@@ -33,7 +38,7 @@ router.get("/:id", async (req, res) => {
         }
         const getFoundOne = await User.findById(req.params.id)
         if (getFoundOne) {
-            const { password, ...data } = getFoundOne._doc
+            const { password,messages, ...data } = getFoundOne._doc
             res.status(200).json(data)
         } 
         res.status(401).json("User not found.") 

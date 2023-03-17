@@ -21,6 +21,6 @@ const UserSchema = new mongoose.Schema({
     messages: [{
         type: Object,
     }]
-}, { versionKey: false })
+}, { timestamps: true },{ versionKey: false })
 
 module.exports = mongoose.model("User", UserSchema)

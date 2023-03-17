@@ -1,5 +1,6 @@
 const { ObjectId } = require("bson");
 const mongoose = require("mongoose");
+const OwnerSchema = require("./OwnerSchema");
 
 const MessageSchema = new mongoose.Schema({
 
@@ -7,10 +8,10 @@ const MessageSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         required: false,
     },
-    messages: {
+    messages: [{
         type: String,
         required: true
-    },
+    }],
     username: {
         type:String,
         required:false
