@@ -1,50 +1,27 @@
 const router = require("express").Router();
 const { default: mongoose } = require("mongoose");
 const User = require("../models/User");
-
+const userMutationRepo = require("../data/userRepository/mutationRepo")
+const userQueryRepo = require("../data/userRepository/queryRepo")
+const validator = require("../validations/userValidator")
 
 /* CREATE */
 router.post("/create", async (req, res) => {
-
     try {
-        const newAcc = new User({
-            username: req.body.username,
-            password: req.body.password,
-            profilPicture: req.body.profilPicture,
-            posts: req.body.posts,
-            messages: req.body.messages,
-        })
-
-        const acc = await newAcc.save();
-        if(acc){
-            res.status(200).json(acc._id)
-        } else {
-            res.status(404).send("Something has been occured.")
-        }
-        
-
+        const account = await userMutationRepo.creater(req.body)
+        res.status(200).send(account)
     } catch (err) {
-        const foundOne = await User.findOne({ username: req.body.username })
-        foundOne && res.status(404).send("Username has been taken!")
-
-        res.status(500)
+        res.status(err.status??404).send(err.message)
     }
 })
 
 router.get("/:id", async (req, res) => {
     try {
-        if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-            res.status(400).json("Invalid ID type has been entered.")
-        }
-        const getFoundOne = await User.findById(req.params.id)
-        if (getFoundOne) {
-            const { password,messages, ...data } = getFoundOne._doc
-            res.status(200).json(data)
-        } 
-        res.status(401).json("User not found.") 
-
+        validator.idValidator(req.params.id)
+        const userData = await userQueryRepo.getUserById(req.params.id)
+        res.status(200).send(userData)
     } catch (err) {
-        res.status(500)
+        res.status(err.status??404).send(err.message)
     }
 })
 
