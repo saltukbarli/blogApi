@@ -20,7 +20,7 @@ router.post("/:username", async (req, res) => {
             if (!valid) {
                 res.status(400).json("Invalid username or password!")
             } else {
-                //USER VARSA VE DAHA ÖNCE MESAJ ATTIYSA VERİTABANINA TEKRAR "FROM" ALANI EKLEMEMEK İÇİN KAFA PATLATILAN KISIM
+                //USER VARSA VE DAHA ÖNCE MESAJ ATTIYSA VERİTABANINA TEKRAR "FROM" ALANI EKLEMEMEK İÇİN OLAN KISIM
                 const index = user.messages.findIndex(x => x.from === req.body.username)
 
                 if (user.messages.find(x => x.from === req.body.username)) {
