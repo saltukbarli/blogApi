@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const { default: mongoose } = require("mongoose");
-const User = require("../models/User");
 const userMutationRepo = require("../data/userRepository/mutationRepo")
 const userQueryRepo = require("../data/userRepository/queryRepo")
 const validator = require("../validations/userValidator")
