@@ -22,7 +22,7 @@ async function userPasswordValidation(data) {
         myErr.status = 401
         throw myErr
     }
-    const foundOne = User.findOne({ username: data.username, password: data.password })
+    const foundOne = await User.findOne({ username: data.username, password: data.password })
     if (!foundOne) {
         const myErr = new Error("Invalid username or password!")
         myErr.status = 401
@@ -35,5 +35,20 @@ async function userPasswordValidation(data) {
     }
     return true;
 }
+async function loginPageValidation(data) {
 
-module.exports = { checkUsername, idValidator, userPasswordValidation }
+    const foundOne = await User.findOne({ username: data.username, password: data.password })
+    if (!foundOne) {
+        const myErr = new Error("Invalid username or password!")
+        myErr.status = 401
+        throw myErr
+    }
+    if (data.username == null || data.password == null) {
+        const myErr = new Error("Fill in the blanks!")
+        myErr.status = 406
+        throw myErr
+    }
+    return foundOne;
+}
+
+module.exports = { checkUsername, idValidator, userPasswordValidation, loginPageValidation }
